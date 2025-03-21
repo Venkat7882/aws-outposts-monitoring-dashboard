@@ -1,4 +1,4 @@
-# kcns-aws-outposts-monitoring-dashboard
+# aws-outposts-monitoring-dashboard
 This repo contains AWS cloudformation code to deploy a sample AWS Outposts monitoring dashboard
 
 # AWS Outposts CloudWatch Dashboard - CloudFormation Template

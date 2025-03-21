@@ -45,9 +45,9 @@ The created CloudWatch dashboard will include:
 
 ## Sample Screenshots
 Sample screenshots of CloudFormation execution and the created CloudWatch dashboard.
-![image](https://github.com/Venkat7882/aws-outposts-monitoring-dashboard/images/cfn-execution-outposts-sample-dashboard.png)
+![image](./images/cfn-execution-outposts-sample-dashboard.png)
 
-![image](https://github.com/Venkat7882/aws-outposts-monitoring-dashboard/images/outposts-sample-dashboard.png)
+![image](./images/outposts-sample-dashboard.png)
 
 
 ## Cleanup
@@ -61,5 +61,3 @@ This project is licensed under the [MIT License](LICENSE).
 
 ## Contributions
 Feel free to contribute enhancements or report issues via GitHub Issues.
-
-

@@ -1,0 +1,488 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Description: CloudFormation template to create a CloudWatch Dashboard for AWS Outposts.
+
+Parameters:
+  DashboardName:
+    Type: String
+    Description: Name of the CloudWatch Dashboard
+    Default: Outposts-Dashboard
+
+  OutpostId:
+    Type: String
+    Description: The AWS Outpost ID
+
+  Region:
+    Type: String
+    Description: AWS Region where the Outpost is located
+
+  AccountId:
+    Type: String
+    Description: AWS Account ID
+
+Resources:
+  CloudWatchDashboard:
+    Type: AWS::CloudWatch::Dashboard
+    Properties:
+      DashboardName: !Ref DashboardName
+      DashboardBody: !Sub |
+        {
+            "widgets": [
+          {
+              "type": "metric",
+              "x": 0,
+              "y": 0,
+              "width": 12,
+              "height": 5,
+              "properties": {
+            "metrics": [
+                [ "AWS/Outposts", "ConnectedStatus", "OutpostId", "${OutpostId}" ]
+            ],
+            "region": "${Region}",
+            "title": "Connected status"
+              }
+          },
+          {
+              "type": "metric",
+              "x": 12,
+              "y": 0,
+              "width": 12,
+              "height": 5,
+              "properties": {
+            "metrics": [
+                [ "AWS/Outposts", "CapacityExceptions", "OutpostId", "${OutpostId}", "InstanceType", "c5d.4xlarge" ],
+                [ "...", "c5d.xlarge" ],
+                [ "...", "g4dn.12xlarge" ],
+                [ "...", "i3en.6xlarge" ],
+                [ "...", "m5.2xlarge" ],
+                [ "...", "m5.4xlarge" ],
+                [ "...", "m5.large" ],
+                [ "...", "m5.xlarge" ],
+                [ "...", "r5.2xlarge" ],
+                [ "...", "r5.4xlarge" ],
+                [ "...", "r5.large" ],
+                [ "...", "r5.xlarge" ]
+            ],
+            "region": "${Region}",
+            "title": "Capacity Exceptions"
+              }
+          },
+          {
+              "type": "text",
+              "x": 0,
+              "y": 5,
+              "width": 12,
+              "height": 2,
+              "properties": {
+            "markdown": "**Connected status**: The status of an Outpost's service link connection. If the average statistic is less than 1, the connection is impaired."
+              }
+          },
+          {
+              "type": "text",
+              "x": 12,
+              "y": 5,
+              "width": 12,
+              "height": 2,
+              "properties": {
+            "markdown": "**Capacity exceptions**: The number of insufficient capacity errors for instance launches."
+              }
+          },
+          {
+              "type": "metric",
+              "x": 0,
+              "y": 7,
+              "width": 12,
+              "height": 5,
+              "properties": {
+            "metrics": [
+                [ "AWS/Outposts", "UsedInstanceType_Count", "OutpostId", "${OutpostId}", "InstanceType", "c5d.4xlarge" ],
+                [ "...", "c5d.xlarge" ],
+                [ "...", "g4dn.12xlarge" ],
+                [ "...", "i3en.6xlarge" ],
+                [ "...", "m5.2xlarge" ],
+                [ "...", "m5.4xlarge" ],
+                [ "...", "m5.large" ],
+                [ "...", "m5.xlarge" ],
+                [ "...", "r5.2xlarge" ],
+                [ "...", "r5.4xlarge" ],
+                [ "...", "r5.large" ],
+                [ "...", "r5.xlarge" ]
+            ],
+            "region": "${Region}",
+            "title": "Used instance types",
+            "yAxis": {
+                "left": {
+              "min": 0,
+              "showUnits": false,
+              "label": "Count"
+                }
+            }
+              }
+          },
+          {
+              "type": "metric",
+              "x": 12,
+              "y": 7,
+              "width": 12,
+              "height": 5,
+              "properties": {
+            "metrics": [
+                [ "AWS/Outposts", "AvailableInstanceType_Count", "OutpostId", "${OutpostId}", "InstanceType", "c5d.4xlarge" ],
+                [ "...", "c5d.xlarge" ],
+                [ "...", "g4dn.12xlarge" ],
+                [ "...", "i3en.6xlarge" ],
+                [ "...", "m5.2xlarge" ],
+                [ "...", "m5.4xlarge" ],
+                [ "...", "m5.large" ],
+                [ "...", "m5.xlarge" ],
+                [ "...", "r5.2xlarge" ],
+                [ "...", "r5.4xlarge" ],
+                [ "...", "r5.large" ],
+                [ "...", "r5.xlarge" ]
+            ],
+            "region": "${Region}",
+            "title": "Available instance types",
+            "yAxis": {
+                "left": {
+              "min": 0,
+              "showUnits": false,
+              "label": "Count"
+                }
+            }
+              }
+          },
+          {
+              "type": "text",
+              "x": 0,
+              "y": 12,
+              "width": 12,
+              "height": 2,
+              "properties": {
+            "markdown": "**Used instance types**: The number of instance types that are currently in use, including any instance types used by managed services such as Amazon Relational Database Service (Amazon RDS) or Application Load Balancer. This metric does not include capacity for any Dedicated Hosts configured on the Outpost."
+              }
+          },
+          {
+              "type": "text",
+              "x": 12,
+              "y": 12,
+              "width": 12,
+              "height": 2,
+              "properties": {
+            "markdown": "**Available instance types**: The number of available instance types. This metric includes the AvailableReservedInstances count."
+              }
+          },
+          {
+              "type": "metric",
+              "x": 0,
+              "y": 14,
+              "width": 12,
+              "height": 5,
+              "properties": {
+            "metrics": [
+                [ "AWS/Outposts", "UsedReservedInstances", "OutpostId", "${OutpostId}", "InstanceType", "c5d.4xlarge" ],
+                [ "...", "c5d.xlarge" ],
+                [ "...", "g4dn.12xlarge" ],
+                [ "...", "i3en.6xlarge" ],
+                [ "...", "m5.2xlarge" ],
+                [ "...", "m5.4xlarge" ],
+                [ "...", "m5.large" ],
+                [ "...", "m5.xlarge" ],
+                [ "...", "r5.2xlarge" ],
+                [ "...", "r5.4xlarge" ],
+                [ "...", "r5.large" ],
+                [ "...", "r5.xlarge" ]
+            ],
+            "region": "${Region}",
+            "title": "Used reserved instances",
+            "yAxis": {
+                "left": {
+              "min": 0,
+              "showUnits": false,
+              "label": "Count"
+                }
+            }
+              }
+          },
+          {
+              "type": "metric",
+              "x": 12,
+              "y": 14,
+              "width": 12,
+              "height": 5,
+              "properties": {
+            "metrics": [
+                [ "AWS/Outposts", "AvailableReservedInstances", "OutpostId", "${OutpostId}", "InstanceType", "c5d.4xlarge" ],
+                [ "...", "c5d.xlarge" ],
+                [ "...", "g4dn.12xlarge" ],
+                [ "...", "i3en.6xlarge" ],
+                [ "...", "m5.2xlarge" ],
+                [ "...", "m5.4xlarge" ],
+                [ "...", "m5.large" ],
+                [ "...", "m5.xlarge" ],
+                [ "...", "r5.2xlarge" ],
+                [ "...", "r5.4xlarge" ],
+                [ "...", "r5.large" ],
+                [ "...", "r5.xlarge" ]
+            ],
+            "region": "${Region}",
+            "title": "Available reserved instances",
+            "yAxis": {
+                "left": {
+              "min": 0,
+              "showUnits": false,
+              "label": "Count"
+                }
+            }
+              }
+          },
+          {
+              "type": "text",
+              "x": 0,
+              "y": 19,
+              "width": 12,
+              "height": 2,
+              "properties": {
+            "markdown": "**Used reserved instances**: The number of instances that are running in the compute capacity reserved using Capacity Reservations. This metric does not include Amazon EC2 Reserved Instances."
+              }
+          },
+          {
+              "type": "text",
+              "x": 12,
+              "y": 19,
+              "width": 12,
+              "height": 2,
+              "properties": {
+            "markdown": "**Available reserved instances**: The number of instances that are available for launch into the compute capacity reserved using Capacity Reservations."
+              }
+          },
+          {
+              "type": "metric",
+              "x": 0,
+              "y": 21,
+              "width": 12,
+              "height": 5,
+              "properties": {
+            "metrics": [
+                [ "AWS/Outposts", "InstanceTypeCapacityUtilization", "OutpostId", "${OutpostId}", "InstanceType", "c5d.4xlarge" ],
+                [ "...", "c5d.xlarge" ],
+                [ "...", "g4dn.12xlarge" ],
+                [ "...", "i3en.6xlarge" ],
+                [ "...", "m5.2xlarge" ],
+                [ "...", "m5.4xlarge" ],
+                [ "...", "m5.large" ],
+                [ "...", "m5.xlarge" ],
+                [ "...", "r5.2xlarge" ],
+                [ "...", "r5.4xlarge" ],
+                [ "...", "r5.large" ],
+                [ "...", "r5.xlarge" ]
+            ],
+            "region": "${Region}",
+            "title": "Instance type capacity utilization (%)",
+            "yAxis": {
+                "left": {
+              "min": 0,
+              "max": 100,
+              "showUnits": false,
+              "label": "Percent (%)"
+                }
+            }
+              }
+          },
+          {
+              "type": "metric",
+              "x": 12,
+              "y": 21,
+              "width": 12,
+              "height": 5,
+              "properties": {
+            "metrics": [
+                [ "AWS/Outposts", "InstanceTypeCapacityAvailability", "OutpostId", "${OutpostId}", "InstanceType", "c5d.4xlarge" ],
+                [ "...", "c5d.xlarge" ],
+                [ "...", "g4dn.12xlarge" ],
+                [ "...", "i3en.6xlarge" ],
+                [ "...", "m5.2xlarge" ],
+                [ "...", "m5.4xlarge" ],
+                [ "...", "m5.large" ],
+                [ "...", "m5.xlarge" ],
+                [ "...", "r5.2xlarge" ],
+                [ "...", "r5.4xlarge" ],
+                [ "...", "r5.large" ],
+                [ "...", "r5.xlarge" ]
+            ],
+            "region": "${Region}",
+            "title": "Instance type capacity availability (%)",
+            "yAxis": {
+                "left": {
+              "min": 0,
+              "max": 100,
+              "showUnits": false,
+              "label": "Percent (%)"
+                }
+            }
+              }
+          },
+          {
+              "type": "text",
+              "x": 0,
+              "y": 26,
+              "width": 12,
+              "height": 2,
+              "properties": {
+            "markdown": "**Instance type capacity utilization**: The percentage of instance capacity in use. This metric does not include capacity for any Dedicated Hosts configured on the Outpost."
+              }
+          },
+          {
+              "type": "text",
+              "x": 12,
+              "y": 26,
+              "width": 12,
+              "height": 2,
+              "properties": {
+            "markdown": "**Instance type capacity availability**: The percentage of instance capacity available. This metric does not include capacity for any Dedicated Hosts configured on the Outpost."
+              }
+          },
+          {
+              "type": "metric",
+              "x": 0,
+              "y": 28,
+              "width": 12,
+              "height": 5,
+              "properties": {
+            "metrics": [
+                [ { "expression": "SEARCH('{AWS/Outposts,OutpostId,VolumeType} MetricName=\"EBSVolumeTypeCapacityUtilization\" OutpostId=\"${OutpostId}\"','Average')", "id": "e1", "visible": true } ]
+            ],
+            "region": "${Region}",
+            "title": "EBS volume type capacity utilization (%)",
+            "yAxis": {
+                "left": {
+              "min": 0,
+              "max": 100,
+              "showUnits": false,
+              "label": "Percent (%)"
+                }
+            }
+              }
+          },
+          {
+              "type": "metric",
+              "x": 12,
+              "y": 28,
+              "width": 12,
+              "height": 5,
+              "properties": {
+            "metrics": [
+                [ { "expression": "SEARCH('{AWS/Outposts,OutpostId,VolumeType} MetricName=\"EBSVolumeTypeCapacityAvailability\" OutpostId=\"${OutpostId}\"','Average')", "id": "e1", "visible": true } ]
+            ],
+            "region": "${Region}",
+            "title": "EBS volume type capacity availibility (%)",
+            "yAxis": {
+                "left": {
+              "min": 0,
+              "max": 100,
+              "showUnits": false,
+              "label": "Percent (%)"
+                }
+            }
+              }
+          },
+          {
+              "type": "text",
+              "x": 0,
+              "y": 33,
+              "width": 12,
+              "height": 2,
+              "properties": {
+            "markdown": "**EBSVolumeTypeCapacityUtilization** - The percentage of EBS volume type capacity in use."
+              }
+          },
+          {
+              "type": "text",
+              "x": 12,
+              "y": 33,
+              "width": 12,
+              "height": 2,
+              "properties": {
+            "markdown": "**EBSVolumeTypeCapacityAvailability** - The percentage of EBS volume type capacity available."
+              }
+          },
+          {
+              "type": "metric",
+              "x": 0,
+              "y": 35,
+              "width": 12,
+              "height": 5,
+              "properties": {
+            "metrics": [
+                [ { "expression": "SEARCH('{AWS/Outposts,OutpostId,VolumeType} MetricName=\"EBSVolumeTypeCapacityUtilizationGB\" OutpostId=\"${OutpostId}\"','Average')", "id": "e1", "visible": true } ]
+            ],
+            "region": "${Region}",
+            "title": "EBS volume type capacity utilization (GB)",
+            "yAxis": {
+                "left": {
+              "min": 0,
+              "showUnits": false,
+              "label": "Gigabyte"
+                }
+            }
+              }
+          },
+          {
+              "type": "metric",
+              "x": 12,
+              "y": 35,
+              "width": 12,
+              "height": 5,
+              "properties": {
+            "metrics": [
+                [ { "expression": "SEARCH('{AWS/Outposts,OutpostId,VolumeType} MetricName=\"EBSVolumeTypeCapacityAvailabilityGB\" OutpostId=\"${OutpostId}\"','Average')", "id": "e1", "visible": true } ]
+            ],
+            "region": "${Region}",
+            "title": "EBS volume type capacity availibility (GB)",
+            "yAxis": {
+                "left": {
+              "min": 0,
+              "showUnits": false,
+              "label": "Gigabyte"
+                }
+            }
+              }
+          },
+          {
+              "type": "text",
+              "x": 0,
+              "y": 40,
+              "width": 12,
+              "height": 2,
+              "properties": {
+            "markdown": "**EBSVolumeTypeCapacityUtilizationGB** - The number of gigabytes in use for the EBS volume type."
+              }
+          },
+          {
+              "type": "text",
+              "x": 12,
+              "y": 40,
+              "width": 12,
+              "height": 2,
+              "properties": {
+            "markdown": "**EBSVolumeTypeCapacityAvailabilityGB** - The number of gigabytes of available capacity for the EBS volume type."
+              }
+          },
+          {
+              "type": "metric",
+              "x": 0,
+              "y": 42,
+              "width": 12,
+              "height": 6,
+              "properties": {
+            "view": "timeSeries",
+            "stacked": false,
+            "metrics": [
+                [ "AWS/S3Outposts", "AccountUsedBytes", "OutpostId", "${OutpostId}", "AccountId", "${AccountId}", { "region": "${Region}" } ],
+                [ ".", "OutpostFreeBytes", ".", "." ]
+            ],
+            "region": "${Region}",
+            "period": 300,
+            "title": "S3OnOutposts - AccountUsedBytes, OutpostFreeBytes"
+              }
+          }
+            ]
+        }
